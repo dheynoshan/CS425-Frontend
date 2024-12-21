@@ -44,49 +44,20 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Dashboard</h2>
-      <div style={styles.summary}>
-        <TicketSummary title="Open Tickets" count={ticketCounts.OPEN} />
-        <TicketSummary title="In Progress" count={ticketCounts.IN_PROGRESS} />
-        <TicketSummary title="Completed" count={ticketCounts.COMPLETED} />
-        <TicketSummary title="Rejected" count={ticketCounts.REJECTED} />
-        <TicketSummary title="Closed" count={ticketCounts.CLOSED} />
+    
+      <div className="w-full max-w-5xl bg-white rounded-lg shadow-xl p-8">
+        <h2 className="text-4xl font-semibold text-secondary text-center mb-8">
+          Dashboard
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <TicketSummary title="Open Tickets" count={ticketCounts.OPEN} />
+          <TicketSummary title="In Progress" count={ticketCounts.IN_PROGRESS} />
+          <TicketSummary title="Completed" count={ticketCounts.COMPLETED} />
+          <TicketSummary title="Rejected" count={ticketCounts.REJECTED} />
+          <TicketSummary title="Closed" count={ticketCounts.CLOSED} />
+        </div>
       </div>
-    </div>
   );
 };
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%", // Ensures it takes full height of the parent
-    padding: "2rem",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    width: "80%", // Restricts the width for a clean layout
-    maxWidth: "800px",
-    fontFamily: "'Arial', sans-serif",
-  },
-  header: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "1.5rem",
-    textAlign: "center",
-  },
-  summary: {
-    display: "flex",
-    gap: "1.5rem",
-    justifyContent: "center",
-    flexWrap: "wrap", // Ensures responsiveness for smaller screens
-  },
-};
-
-
 
 export default Dashboard;
