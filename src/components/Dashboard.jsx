@@ -18,22 +18,13 @@ const Dashboard = () => {
           throw new Error("Failed to fetch tickets");
         }
         const data = await response.json();
-
-        // Calculate ticket counts based on their status
         const counts = data.reduce(
           (acc, ticket) => {
             acc[ticket.ticketStatus] = (acc[ticket.ticketStatus] || 0) + 1;
             return acc;
           },
-          {
-            OPEN: 0,
-            IN_PROGRESS: 0,
-            COMPLETED: 0,
-            REJECTED: 0,
-            CLOSED: 0,
-          }
+          { OPEN: 0, IN_PROGRESS: 0, COMPLETED: 0, REJECTED: 0, CLOSED: 0 }
         );
-
         setTicketCounts(counts);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -44,19 +35,16 @@ const Dashboard = () => {
   }, []);
 
   return (
-    
-      <div className="w-full max-w-5xl bg-white rounded-lg shadow-xl p-8">
-        <h2 className="text-4xl font-semibold text-secondary text-center mb-8">
-          Dashboard
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          <TicketSummary title="Open Tickets" count={ticketCounts.OPEN} />
-          <TicketSummary title="In Progress" count={ticketCounts.IN_PROGRESS} />
-          <TicketSummary title="Completed" count={ticketCounts.COMPLETED} />
-          <TicketSummary title="Rejected" count={ticketCounts.REJECTED} />
-          <TicketSummary title="Closed" count={ticketCounts.CLOSED} />
-        </div>
+    <div className="max-w-5xl bg-white rounded-lg shadow-lg p-8 mx-auto">
+      <h2 className="text-2xl font-bold text-secondary text-center mb-8">Dashboard</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+        <TicketSummary title="Open Tickets" count={ticketCounts.OPEN} />
+        <TicketSummary title="In Progress" count={ticketCounts.IN_PROGRESS} />
+        <TicketSummary title="Completed" count={ticketCounts.COMPLETED} />
+        <TicketSummary title="Rejected" count={ticketCounts.REJECTED} />
+        <TicketSummary title="Closed" count={ticketCounts.CLOSED} />
       </div>
+    </div>
   );
 };
 

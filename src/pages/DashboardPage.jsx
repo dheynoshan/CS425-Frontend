@@ -2,20 +2,8 @@ import React from "react";
 import Dashboard from "../components/Dashboard";
 
 const DashboardPage = () => {
-  const styles = {
-    page: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "flex-start",
-      alignItems: "center",
-      height: "100%",
-      backgroundColor: "#f9f9f9",
-      margin: 0,
-    },
-  };
-
   return (
-    <div style={styles.page}>
+    <div className="flex flex-col justify-start items-center h-full bg-tertiary">
       <Dashboard />
     </div>
   );

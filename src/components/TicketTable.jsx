@@ -67,7 +67,6 @@ const TicketTable = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Dummy API for demonstration
     fetch(`https://jsonplaceholder.typicode.com/posts/${selectedTicket.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -95,26 +94,25 @@ const TicketTable = () => {
       .catch((err) => alert(err.message));
   };
 
-  if (loading) {
-    return <p>Loading tickets...</p>;
-  }
+  if (loading) return <p className="text-center text-gray-600">Loading tickets...</p>;
 
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2 style={styles.title}>Tickets</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Tickets</h2>
 
-      <div style={styles.filters}>
-        <label style={styles.label}>
-          Priority:
+      {/* Filters */}
+      <div className="flex gap-4 mb-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Priority:
+          </label>
           <select
             name="priority"
             value={filters.priority}
             onChange={handleFilterChange}
-            style={styles.select}
+            className="block w-full mt-1 p-2 border rounded-md"
           >
             <option value="">All</option>
             <option value="URGENT">URGENT</option>
@@ -122,14 +120,16 @@ const TicketTable = () => {
             <option value="MEDIUM">MEDIUM</option>
             <option value="LOW">LOW</option>
           </select>
-        </label>
-        <label style={styles.label}>
-          Status:
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Status:
+          </label>
           <select
             name="status"
             value={filters.status}
             onChange={handleFilterChange}
-            style={styles.select}
+            className="block w-full mt-1 p-2 border rounded-md"
           >
             <option value="">All</option>
             <option value="OPEN">OPEN</option>
@@ -138,38 +138,36 @@ const TicketTable = () => {
             <option value="REJECTED">REJECTED</option>
             <option value="CLOSED">CLOSED</option>
           </select>
-        </label>
+        </div>
       </div>
 
-      <table style={styles.table}>
-        <thead>
+      {/* Table */}
+      <table className="min-w-full table-auto border-collapse border border-gray-200 bg-secondary">
+        <thead className="bg-gray-100">
           <tr>
-            <th style={styles.th}>ID</th>
-            <th style={styles.th}>Apartment</th>
-            <th style={styles.th}>Title</th>
-            <th style={styles.th}>Description</th>
-            <th style={styles.th}>Priority</th>
-            <th style={styles.th}>Status</th>
-            <th style={styles.th}>Created At</th>
-            <th style={styles.th}>Actions</th>
+            {["ID", "Apartment", "Title", "Description", "Priority", "Status", "Created At", "Actions"].map((heading) => (
+              <th key={heading} className="px-4 py-2 border border-gray-300 text-left text-sm font-medium text-gray-800">
+                {heading}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {filteredTickets.map((ticket) => (
-            <tr key={ticket.id} style={styles.tr}>
-              <td style={styles.td}>{ticket.id}</td>
-              <td style={styles.td}>{ticket.apartmentNumber}</td>
-              <td style={styles.td}>{ticket.title}</td>
-              <td style={styles.td}>{ticket.description}</td>
-              <td style={styles.td}>{ticket.priority}</td>
-              <td style={styles.td}>{ticket.ticketStatus}</td>
-              <td style={styles.td}>
+            <tr key={ticket.id} className="hover:bg-gray-50">
+              <td className="px-4 py-2 border">{ticket.id}</td>
+              <td className="px-4 py-2 border">{ticket.apartmentNumber}</td>
+              <td className="px-4 py-2 border">{ticket.title}</td>
+              <td className="px-4 py-2 border">{ticket.description}</td>
+              <td className="px-4 py-2 border">{ticket.priority}</td>
+              <td className="px-4 py-2 border">{ticket.ticketStatus}</td>
+              <td className="px-4 py-2 border">
                 {new Date(ticket.createdAt).toLocaleString()}
               </td>
-              <td style={styles.td}>
+              <td className="px-4 py-2 border">
                 <button
                   onClick={() => handleEditClick(ticket)}
-                  style={styles.editButton}
+                  className="px-2 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                 >
                   Edit
                 </button>
@@ -179,67 +177,56 @@ const TicketTable = () => {
         </tbody>
       </table>
 
+      {/* Modal */}
       {isModalVisible && (
-        <div style={styles.modal}>
-          <div style={styles.modalContent}>
-            <h3 style={styles.modalTitle}>Edit Ticket</h3>
-            <form onSubmit={handleFormSubmit} style={styles.form}>
-              <label style={styles.label}>
-                Title:
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-4">Edit Ticket</h3>
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">Title:</label>
                 <input
                   type="text"
                   value={selectedTicket.title}
                   onChange={(e) =>
-                    setSelectedTicket((prev) => ({
-                      ...prev,
-                      title: e.target.value,
-                    }))
+                    setSelectedTicket((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  style={styles.input}
+                  className="w-full p-2 border rounded-md"
                 />
-              </label>
-              <label style={styles.label}>
-                Description:
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Description:</label>
                 <textarea
                   value={selectedTicket.description}
                   onChange={(e) =>
-                    setSelectedTicket((prev) => ({
-                      ...prev,
-                      description: e.target.value,
-                    }))
+                    setSelectedTicket((prev) => ({ ...prev, description: e.target.value }))
                   }
-                  style={styles.textarea}
-                />
-              </label>
-              <label style={styles.label}>
-                Priority:
+                  className="w-full p-2 border rounded-md"
+                ></textarea>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Priority:</label>
                 <select
                   value={selectedTicket.priority}
                   onChange={(e) =>
-                    setSelectedTicket((prev) => ({
-                      ...prev,
-                      priority: e.target.value,
-                    }))
+                    setSelectedTicket((prev) => ({ ...prev, priority: e.target.value }))
                   }
-                  style={styles.select}
+                  className="w-full p-2 border rounded-md"
                 >
                   <option value="URGENT">URGENT</option>
                   <option value="HIGH">HIGH</option>
                   <option value="MEDIUM">MEDIUM</option>
                   <option value="LOW">LOW</option>
                 </select>
-              </label>
-              <label style={styles.label}>
-                Status:
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Status:</label>
                 <select
                   value={selectedTicket.ticketStatus}
                   onChange={(e) =>
-                    setSelectedTicket((prev) => ({
-                      ...prev,
-                      ticketStatus: e.target.value,
-                    }))
+                    setSelectedTicket((prev) => ({ ...prev, ticketStatus: e.target.value }))
                   }
-                  style={styles.select}
+                  className="w-full p-2 border rounded-md"
                 >
                   <option value="OPEN">OPEN</option>
                   <option value="IN_PROGRESS">IN_PROGRESS</option>
@@ -247,113 +234,28 @@ const TicketTable = () => {
                   <option value="REJECTED">REJECTED</option>
                   <option value="CLOSED">CLOSED</option>
                 </select>
-              </label>
-              <button type="submit" style={styles.saveButton}>
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={handleModalClose}
-                style={styles.cancelButton}
-              >
-                Cancel
-              </button>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={handleModalClose}
+                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
     </div>
   );
-};
-
-const styles = {
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    backgroundColor: "#f8f9fa",
-    color: "#212529",
-  },
-  th: {
-    padding: "10px",
-    border: "1px solid #ddd",
-    backgroundColor: "#343a40",
-    color: "#fff",
-  },
-  td: {
-    padding: "10px",
-    border: "1px solid #ddd",
-  },
-  modal: {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    width: "500px",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-  },
-  modalTitle: {
-    marginBottom: "20px",
-    textAlign: "center",
-    fontSize: "1.5rem",
-    color: "#343a40",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  label: {
-    fontSize: "1rem",
-    fontWeight: "bold",
-    color: "#212529",
-  },
-  input: {
-    padding: "10px",
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    fontSize: "1rem",
-    width: "100%",
-  },
-  textarea: {
-    padding: "10px",
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    fontSize: "1rem",
-    width: "100%",
-    height: "80px",
-  },
-  select: {
-    padding: "10px",
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    fontSize: "1rem",
-  },
-  saveButton: {
-    padding: "10px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  cancelButton: {
-    padding: "10px",
-    backgroundColor: "#dc3545",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
 };
 
 export default TicketTable;
